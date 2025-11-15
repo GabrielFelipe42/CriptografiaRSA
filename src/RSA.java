@@ -11,7 +11,7 @@ public class RSA {
      * Construtor para a classe RSA.
      * Gera um novo par de chaves RSA com um tamanho de bit especificado.
      *
-     * @param bitLength O tamanho em bits dos números primos p e q. Recomenda-se 1024 ou 2048 para segurança.
+     * @param bitLength O tamanho em bits dos números primos p e q.
      */
     public RSA(int bitLength) {
         this.bitLength = bitLength;
@@ -37,7 +37,8 @@ public class RSA {
 
         // Expoente público padrão: 65537 (fallback para aleatório se necessário)
         e = BigInteger.valueOf(65537);
-        // Se por acaso não for coprimo de phi, fazemos fallback para geração aleatória.
+        // Se 65537 não for coprimo de phi (caso raro), escolhe um expoente público
+        // aleatório que satisfaça gcd(e, phi) = 1.
         if (phi.gcd(e).compareTo(BigInteger.ONE) != 0) {
             e = BigInteger.probablePrime(bitLength / 2, random);
             while (phi.gcd(e).compareTo(BigInteger.ONE) != 0) {

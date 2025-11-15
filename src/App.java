@@ -28,7 +28,7 @@ public class App {
 
     /** Processa uma mensagem: converte, gera chaves, encripta e decripta. */
     public static void runRSA(String mensagemOriginal) throws Exception {
-        System.out.println("\nMensagem Original (texto claro): \u001b[1m" + mensagemOriginal + "\u001b[0m"); // Bold
+        System.out.println("\nMensagem Original (texto claro): \u001b[1m" + mensagemOriginal + "\u001b[0m");
 
         // Converte string -> BigInteger (ASCII, sinal positivo)
         BigInteger mensagemNumerica = new BigInteger(1, mensagemOriginal.getBytes(StandardCharsets.US_ASCII));
@@ -55,7 +55,7 @@ public class App {
 
         // Converte o BigInteger descriptografado de volta para uma string UTF-8.
         String mensagemDescriptografada = bigIntegerToString(mensagemDescriptografadaNumerica);
-        System.out.println("\nMensagem Descriptografada (texto claro): \u001b[1m" + mensagemDescriptografada + "\u001b[0m"); // Bold
+        System.out.println("\nMensagem Descriptografada (texto claro): \u001b[1m" + mensagemDescriptografada + "\u001b[0m");
         System.out.println("--------------------------------------------------");
     }
 

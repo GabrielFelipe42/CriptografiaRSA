@@ -1,11 +1,7 @@
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-/**
- * Implementa o algoritmo de criptografia RSA.
- * Esta classe é responsável pela geração das chaves pública e privada,
- * bem como pela criptografia e descriptografia de mensagens.
- */
+/** Implementação simples de RSA: gera chaves e cifra/decifra inteiros. */
 public class RSA {
     private BigInteger p, q, n, phi, e, d;
     private int bitLength;
@@ -23,18 +19,9 @@ public class RSA {
         generateKeys();
     }
 
-    /**
-     * Gera o par de chaves pública e privada RSA.
-     * O processo envolve:
-     * 1. Escolha de dois números primos grandes e diferentes, p e q.
-     * 2. Cálculo de n (o módulo): n = p * q.
-     * 3. Cálculo de phi(n) (a função totiente de Euler): phi(n) = (p-1) * (q-1).
-     * 4. Escolha do expoente público e (1 < e < phi(n) e e é coprimo de phi(n)).
-     * 5. Cálculo do expoente privado d (d * e ≡ 1 (mod phi(n))).
-     */
+    /** Gera p, q, n, phi, e e d (chaves RSA). */
     private void generateKeys() {
-        // 1. Escolha dois números primos grandes e diferentes, p e q
-        // O tamanho de cada primo é aproximadamente metade do bitLength total.
+        // Gera primos p e q (~bitLength/2 bits)
         p = BigInteger.probablePrime(bitLength / 2, random);
         q = BigInteger.probablePrime(bitLength / 2, random);
         // Garante que p e q sejam diferentes.
@@ -42,25 +29,23 @@ public class RSA {
             q = BigInteger.probablePrime(bitLength / 2, random);
         }
 
-        // 2. Calcule n (o módulo): n = p * q
-        // n é o módulo para as chaves pública e privada.
+        // n = p * q
         n = p.multiply(q);
 
-        // 3. Calcule phi(n) (a função totiente de Euler): phi(n) = (p-1) * (q-1)
-        // phi(n) é usado para calcular d, o inverso modular de e.
+        // phi = (p-1)*(q-1)
         phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
-        // 4. Escolha o expoente público e
-        // e deve ser 1 < e < phi(n) e ser coprimo de phi(n).
-        // BigInteger.probablePrime é usado para encontrar um primo que sirva como e.
-        e = BigInteger.probablePrime(bitLength / 2, random);
-        while (phi.gcd(e).compareTo(BigInteger.ONE) != 0) {
+        // Expoente público padrão: 65537 (fallback para aleatório se necessário)
+        e = BigInteger.valueOf(65537);
+        // Se por acaso não for coprimo de phi, fazemos fallback para geração aleatória.
+        if (phi.gcd(e).compareTo(BigInteger.ONE) != 0) {
             e = BigInteger.probablePrime(bitLength / 2, random);
+            while (phi.gcd(e).compareTo(BigInteger.ONE) != 0) {
+                e = BigInteger.probablePrime(bitLength / 2, random);
+            }
         }
 
-        // 5. Calcule o expoente privado d
-        // d é o inverso modular de e modulo phi(n).
-        // Isso significa que (d * e) % phi(n) = 1.
+        // d = e^(-1) mod phi
         d = e.modInverse(phi);
     }
 

@@ -1,42 +1,49 @@
 # Criptografia Assimétrica RSA em Java
 
-Este projeto implementa o algoritmo de criptografia e descriptografia de mensagens utilizando o algoritmo RSA, conforme solicitado para o trabalho final da disciplina de Segurança da Informação da UDESC.
+Implementação didática do algoritmo RSA para o trabalho da disciplina de Segurança da Informação (UDESC).
 
 ## Funcionalidades
 
-- Geração de par de chaves RSA (pública e privada) com tamanho de 1024 bits.
-- Conversão de mensagens de texto (String) para representação numérica (BigInteger) utilizando UTF-8.
-- Criptografia de mensagens usando a chave pública (n, e).
-- Descriptografia de mensagens usando a chave privada (n, d).
-- Conversão de mensagens descriptografadas (BigInteger) de volta para texto (String).
-- Exibição clara de todas as etapas: mensagem original, chaves geradas, mensagem criptografada e mensagem descriptografada.
+- Geração de par de chaves RSA (pública e privada) com tamanho padrão 1024 bits.
+- Conversão de mensagens de texto (`String`) para `BigInteger` usando ASCII e `new BigInteger(1, bytes)` (assegura valor positivo).
+- Uso do expoente público padrão `e = 65537` (com fallback se necessário).
+- Criptografia (`C = M^e mod n`) e descriptografia (`M = C^d mod n`).
+- Exibição: mensagem original, mensagem criptografada (inteiros), chave pública (`n`,`e`), chave privada (`n`,`d`) e mensagem descriptografada.
+
+> Observação: para maior segurança em produção, recomenda‑se usar chaves >= 2048 bits e padding OAEP (bibliotecas JCA / BouncyCastle).
 
 ## Requisitos
 
-- Java Development Kit (JDK) versão 17 ou superior (preferencialmente uma versão LTS como OpenJDK 17 ou 21).
+- Java Development Kit (JDK) versão 17 ou superior (recomendado OpenJDK 17/21).
 
-## Como Executar
+## Como executar
 
-Para compilar e executar o projeto, siga os passos abaixo:
+1. Abra um terminal no diretório do projeto:
 
-1.  **Navegue até o diretório raiz do projeto:**
-    ```bash
-    cd CriptografiaRSA
-    ```
+```powershell
+cd 'c:\Users\gabri\Desktop\SEC - TF - Github\CriptografiaRSA'
+```
 
-2.  **Compile os arquivos Java:**
-    ```bash
-    javac src/App.java src/RSA.java
-    ```
+2. Compile todos os arquivos e coloque as classes em `bin`:
 
-3.  **Execute a aplicação:**
-    ```bash
-    java -cp src App
-    ```
+```powershell
+javac -d bin src\*.java
+```
 
-    A saída no console mostrará o processo de criptografia e descriptografia para as mensagens de teste "abc" e "teste", exibindo a mensagem original, as chaves, a mensagem criptografada e a mensagem descriptografada.
+3. Execute a aplicação:
 
-## Estrutura do Projeto
+```powershell
+java -cp bin App
+```
 
--   `src/App.java`: Contém o ponto de entrada da aplicação (`main` method) e a lógica para executar os testes, converter strings e exibir os resultados. Também inclui o método para converter `BigInteger` de volta para `String`.
--   `src/RSA.java`: Implementa o algoritmo RSA, incluindo a geração das chaves (p, q, n, phi, e, d), e os métodos para criptografar (`encrypt`) e descriptografar (`decrypt`) mensagens.
+A saída exibirá a demonstração (por padrão testamos as mensagens: `"abc"`, `"teste"` e `"gabriel"`).
+
+## Estrutura do projeto
+
+- `src/App.java`: classe principal — lê/define mensagens de teste, converte para `BigInteger`, gera chaves via `RSA`, encripta e decripta, e imprime os resultados.
+- `src/RSA.java`: implementação didática de RSA — gera `p`, `q`, `n`, `phi`, escolhe `e`, calcula `d`, e fornece `encrypt`/`decrypt`.
+
+## Notas finais
+
+- O projeto está alinhado com o enunciado do trabalho (conversão ASCII → inteiro, geração de chaves, criptografia/descriptografia e reconversão para texto).
+- Para submissão acadêmica, se quiser, posso ajustar o README para incluir instruções de execução alternativas ou explicar pontos de segurança (padding, tamanho de chave, não expor `d`).

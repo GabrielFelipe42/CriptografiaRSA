@@ -2,7 +2,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-/** Classe principal: demonstra criptografia/descriptografia RSA. */
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("==================================================");
@@ -21,12 +20,15 @@ public class App {
         System.out.println("--------------------------------------------------");
         runRSA("gabriel");
 
+        System.out.println("\n--- Teste 4: Mensagem 'Vitor' ---");
+        System.out.println("--------------------------------------------------");
+        runRSA("Victor");
+
         System.out.println("\n==================================================");
         System.out.println("             FIM DA DEMONSTRAÇÃO                ");
         System.out.println("==================================================");
     }
 
-    /** Processa uma mensagem: converte, gera chaves, encripta e decripta. */
     public static void runRSA(String mensagemOriginal) throws Exception {
         System.out.println("\nMensagem Original (texto claro): \u001b[1m" + mensagemOriginal + "\u001b[0m");
 

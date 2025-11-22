@@ -1,7 +1,6 @@
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-/** Implementação simples de RSA: gera chaves e cifra/decifra inteiros. */
 public class RSA {
     private BigInteger p, q, n, phi, e, d;
     private int bitLength;
